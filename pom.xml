@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>1bfbf3fd-5505-4379-8e99-728b63fd0e56</groupId>
+		<artifactId>solutions-parent-pom</artifactId>
+		<version>1.0.0</version>
+		<relativePath>../parent-pom/pom.xml</relativePath>
+	</parent>
+	<groupId>com.mycompany</groupId>
+	<artifactId>check-in-papi-app</artifactId>
+	<version>1.0.0</version>
+	<packaging>mule-application</packaging>
+
+	<name>check-in-papi-app</name>
+
+	<properties>
+
+		<!-- API Specification -->
+		<api.groupId>1bfbf3fd-5505-4379-8e99-728b63fd0e56</api.groupId>
+		<api.artifactId>check-in-papi</api.artifactId>
+		<api.version>1.0.0</api.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+			</plugin>
+			<plugin>
+                <groupId>org.mule.tools.maven</groupId>
+                <artifactId>mule-maven-plugin</artifactId>
+                <extensions>true</extensions>
+                <version>3.6.0</version>
+                <configuration>
+                    <cloudHubDeployment>
+                        <uri>https://anypoint.mulesoft.com</uri>
+                        <muleVersion>4.4.0</muleVersion>
+                        <connectedAppClientId>${ap.clientid}</connectedAppClientId>
+                        <connectedAppClientSecret>${ap.clientsecret}</connectedAppClientSecret>
+                        <connectedAppGrantType>client_credentials</connectedAppGrantType>
+                        <applicationName>checkin-api-cejy-2405-CA</applicationName>
+                        <environment>dev</environment>      
+                        <objectStoreV2>true</objectStoreV2>
+                        <persistentQueues>false</persistentQueues>
+                        <workers>1</workers>
+                        <workerType>SMALL</workerType>
+                        <properties>
+                        	<anypoint.platform.client_id>0ccd0d69da29422e8a3585e226f8db66</anypoint.platform.client_id>
+                        	<anypoint.platform.client_secret>d955E7EE6a2244FC84144322F7Ca881E</anypoint.platform.client_secret>
+                        </properties>
+                    </cloudHubDeployment>
+                    <classifier>mule-application</classifier>
+                </configuration>
+            </plugin>
+
+			<plugin>
+				<groupId>org.cyclonedx</groupId>
+				<artifactId>cyclonedx-maven-plugin</artifactId>
+				<version>2.6.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>makeAggregateBom</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<projectType>library</projectType>
+					<schemaVersion>1.4</schemaVersion>
+					<includeBomSerialNumber>true</includeBomSerialNumber>
+					<includeCompileScope>true</includeCompileScope>
+					<includeProvidedScope>true</includeProvidedScope>
+					<includeRuntimeScope>true</includeRuntimeScope>
+					<includeSystemScope>true</includeSystemScope>
+					<includeTestScope>false</includeTestScope>
+					<includeLicenseText>false</includeLicenseText>
+					<outputReactorProjects>true</outputReactorProjects>
+					<outputFormat>all</outputFormat>
+					<outputName>bom</outputName>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- API OAS Spec -->
+		<dependency>
+			<groupId>${api.groupId}</groupId>
+			<artifactId>${api.artifactId}</artifactId>
+			<version>${api.version}</version>
+			<classifier>oas</classifier>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-sockets-connector</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-apikit-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange V3</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
+</project>
